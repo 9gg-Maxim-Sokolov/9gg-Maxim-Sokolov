@@ -1,0 +1,371 @@
+body, html {
+	margin: 0;
+	background-color: #293133;
+}
+html {
+	font-size: 25px;
+	color: #e4f1f8;
+	letter-spacing: 0.035em;
+}
+a {
+	text-decoration: none;
+	color: inherit;
+}
+
+iframe {
+	margin-right: 8px;
+}
+
+.header {
+	margin-left: center;
+}
+
+.header a[hidden] {
+	display: none;
+}
+
+.header .emblem img {
+	display: block;
+	height: 400px;
+	margin-left: auto;
+	margin-right: auto;
+/*	border-radius: 500px;*/
+}
+.header .title p {
+	font-size: 38px;
+	text-align: center;
+	font-weight: bold;
+	margin-bottom: 0;
+}
+
+.content {
+	margin-top: 66px;
+	display: flex;
+	flex-wrap: wrap;
+	flex-grow: 1;
+	justify-content: center;
+}
+
+.description {
+	background-color: #f02;
+	padding: 1em;
+	border-radius: 8px;
+	margin: 38px 0px 74px 0px;
+}
+.description a {
+	color: #0049DD;
+}
+
+.description > p {
+  margin: 0 0 0.5em 0;
+  font-weight: bold;
+}
+
+.description > p:last-child {
+   margin: 0;
+}
+
+.ob p {
+	margin-left: 11px;
+}
+.ob b {
+	margin-left: 11px;
+}
+
+.hhh {
+	margin-left: 11px;
+	color: #f02;
+}
+
+.ob h1 {
+	margin-left: 11px;
+}
+
+.buttons {
+	display: flex;
+	width: 100%;
+	border-bottom-left-radius: 8px;
+	border-bottom-right-radius: 8px;
+	overflow: hidden;
+	margin-bottom: 38px;
+}
+
+.button {
+	flex-grow: 1;
+	background-color: #f02;
+	cursor: pointer;
+	transition: all 0.2s ease-in;
+	text-align: center;
+	vertical-align: middle;
+	align-items: center;
+}
+
+.button:hover {
+	background-color: #181513;
+}
+
+.button_glbol {
+	display: flex;
+	margin-top: 20px;
+	flex-grow: 1;
+	border-radius: 30px;
+	background-color: #f02;
+	cursor: pointer;
+	transition: all 0.2s ease-in;
+	text-align: center;
+	vertical-align: center;
+}
+
+.button_glbol:hover {
+	background-color: #181513;
+}
+
+.button_glbol b {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: #fff;
+	font-size: 40px;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.rabota {
+/*	flex-grow: 1;*/
+	background-color: #f02;
+	cursor: pointer;
+	transition: all 0.2s ease-in;
+	text-align: center;
+	width: 300px;
+	align-items: center;
+	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
+	border-bottom-left-radius: 8px;
+	border-bottom-right-radius: 8px;
+}
+.rabota:hover {
+	background-color: #181513;
+}
+
+.title a {
+	color: #f02;
+}
+
+.contein b {
+	color: #8A9597;
+}
+
+.contein2 b {
+	font-size: 20px;
+	color: #8A9597;
+}
+
+.contein3 {
+	margin-top: 28px;
+}
+
+.contein3 b {
+	margin-top: 28px;
+	font-size: 20px;
+	color: #8A9597;
+}
+
+.title1 {
+	margin: 96px 0px 74px 0px;
+	font-size: 38px;
+	text-align: center;
+}
+
+.title1 b {
+	color: #fff;
+	font-size: 50px;
+	text-align: center;
+}
+
+
+@font-face {
+  font-family: 'fontello';
+  src: url('./fontello.eot?89923291');
+  src: url('./fontello.eot?89923291#iefix') format('embedded-opentype'),
+       url('./fontello.woff?89923291') format('woff'),
+       url('./fontello.ttf?89923291') format('truetype'),
+       url('./fontello.svg?89923291#fontello') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+.demo-icon {
+  font-family: "fontello";
+  font-style: normal;
+  font-weight: normal;
+  speak: never;
+ 
+  display: inline-block;
+  text-decoration: inherit;
+  width: 1em;
+  margin-right: .2em;
+  text-align: center;
+  /* opacity: .8; */
+ 
+  /* For safety - reset parent styles, that can break glyph codes*/
+  font-variant: normal;
+  text-transform: none;
+ 
+  /* fix buttons height, for twitter bootstrap */
+  line-height: 1em;
+ 
+  /* Animation center compensation - margins should be symmetric */
+  /* remove if not needed */
+  margin-left: .2em;
+ 
+  /* You can be more comfortable with increased icons size */
+  /* font-size: 120%; */
+ 
+  /* Font smoothing. That was taken from TWBS */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+ 
+  /* Uncomment for 3D effect */
+  /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
+}
+
+
+
+@media only screen and (max-width: 920px) {
+	html {
+		font-size: 20px;
+	}
+	.header .emblem img {
+		height: 200px;
+	}
+	.emblem_mini img {
+		height: 150px;
+	}
+	.sob img {
+		width: 500px;
+	}
+	.tnn p {
+		font-size: 30px;
+	}
+	.Form iframe {
+		width: 500px;
+	}
+}
+@media only screen and (max-width: 612px) {
+	.tnn p {
+		font-size: 15px;
+	}
+	.Form iframe {
+		width: 400px;
+	}
+}
+@media only screen and (max-width: 607px) {
+	.tnn p {
+		font-size: 10px;
+	}
+}
+@media only screen and (max-width: 698px) {
+	.header .title p {
+		font-size: 30px;
+	}
+	video {
+		width: 480px;
+		height: 280px;
+	}
+	.sob img {
+		width: 400px;
+	}
+	.tnn p {
+		font-size: 25px;
+	}
+}
+@media only screen and (max-width: 573px) {
+	.header .title p {
+		font-size: 25px;
+	}
+	.emblem_mini img {
+		height: 120px;
+	}
+	.tnn {
+		margin-top: 80px;
+		font-size: 20px;
+	}
+	.container {
+		padding: 0;
+	}
+	.description {
+		border-radius: 0;
+		margin: 38px 0px 50px 0px;
+	}
+	.content {
+		margin-top: 40px;
+		padding-bottom: 11px
+	}
+	.emblem_mini {
+		height: 65px;
+	}
+	.header .emblem img {
+		height: 200px;
+	}
+	.ob {
+	display: block;
+	margin-top: 180px;
+	}
+	video {
+		width: 360px;
+		height: 200px;
+	}
+	.title1 b {
+		font-size: 30px;
+	}
+	.Back {
+		margin-top: 80px;
+		display: block;
+	}
+}
+@media only screen and (max-width: 425px) {
+	.contein2 b {
+		font-size: 11px;
+	}
+	.contein3 b {
+		font-size: 11px;
+	}
+	.sob img {
+		width: 300px;
+	}
+	.tnn p {
+		font-size: 15px;
+	}
+	.Form iframe {
+		width: 300px;
+	}
+}
+@media only screen and (max-width: 383px) {
+	.header .emblem img {
+		height: 180px;
+	}
+	.header .title p {
+		font-size: 20px;
+	}
+	video {
+		width: 280px;
+		height: 160px;
+	}
+}
+@media only screen and (max-width: 344px) {
+	.header .emblem img {
+		height: 140px;
+	}
+	.header .title p {
+		font-size: 15px;
+	}
+	.emblem_mini img {
+		height: 99px;
+	}
+	.sob img {
+		width: 200px;
+	}
+	.Form iframe {
+		width: 250px;
+	}
+}

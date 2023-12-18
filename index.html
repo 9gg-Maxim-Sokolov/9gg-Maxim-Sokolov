@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="http://code.jquery.com/jquery-1.4.2.min.js"></script>
+
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="yandex-verification" content="d6393e3431b0c435" />
+	<title>Тестирование (no index)</title>
+
+	<link rel="icon" type="image/x-icon" href="/favicon.ico">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=PT+Sans+Narrow:wght@400;700&display=swap" rel="stylesheet">
+	<style>@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');</style>
+
+	<link rel="stylesheet" href="/theme/css/index.css">
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=PT+Sans+Narrow:wght@400;700&display=swap" rel="sheet">
+	<style>@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');</style>
+
+
+<style>
+  #snowflakeContainer {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    display: none;
+  }
+
+  .snowflake {
+    position: fixed;
+    background-color: #CCC;
+    user-select: none;
+    z-index: 1000;
+    pointer-events: none;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+  }
+</style>
+
+<div id="snowflakeContainer">
+  <span class="snowflake"></span>
+</div>
+
+<script>
+  // Массив для хранения объектов Snowflake
+  var snowflakes = [];
+
+  // Глобальные переменные для размера окна браузера
+  var browserWidth;
+  var browserHeight;
+
+  // Указываем количество снежинок, которые должны быть видимыми
+  var numberOfSnowflakes = 50;
+
+  // Флаг для сброса положения снежинок
+  var resetPosition = false;
+
+  // Устанавливаем параметр enableAnimations
+  var enableAnimations = false;
+  var reduceMotionQuery = matchMedia("(prefers-reduced-motion)");
+
+  // Изменяем значение enableAnimations
+  function setAccessibilityState() {
+    if (reduceMotionQuery.matches) {
+      enableAnimations = false;
+    } else { 
+      enableAnimations = true;
+    }
+  }
+  setAccessibilityState();
+
+  reduceMotionQuery.addListener(setAccessibilityState);
+
+  //
+  // Все начинается здесь...
+  //
+  function setup() {
+    if (enableAnimations) {
+      window.addEventListener("DOMContentLoaded", generateSnowflakes, false);
+      window.addEventListener("resize", setResetFlag, false);
+    }
+  }
+  setup();
+
+  //
+  // Конструктор объекта Snowflake
+  //
+  function Snowflake(element, speed, xPos, yPos) {
+    // устанавливаем начальные свойства снежинки
+    this.element = element;
+    this.speed = speed;
+    this.xPos = xPos;
+    this.yPos = yPos;
+    this.scale = 1;
+
+    // объявляем переменные, используемые для движения снежинки
+    this.counter = 0;
+    this.sign = Math.random() < 0.5 ? 1 : -1;
+
+    // устанавливаем значения начальной непрозрачности и размера снежинки 
+    this.element.style.opacity = (.1 + Math.random()) / 3;
+  }
+
+  //
+  // Функция, ответственная за перемещение снежинки
+  //
+  Snowflake.prototype.update = function () {
+    // используем тригонометрию, чтобы определить позицию x и y
+    this.counter += this.speed / 5000;
+    this.xPos += this.sign * this.speed * Math.cos(this.counter) / 40;
+    this.yPos += Math.sin(this.counter) / 40 + this.speed / 30;
+    this.scale = .5 + Math.abs(10 * Math.cos(this.counter) / 20);
+
+    // устанавливаем позицию снежинки
+    setTransform(Math.round(this.xPos), Math.round(this.yPos), this.scale, this.element);
+
+    // если снежинка опустится ниже окна браузера, переместим ее обратно наверх   
+    if (this.yPos > browserHeight) {
+      this.yPos = -50;
+    }
+  }
+
+  //
+  // Эффективный способ установить положение и размер снежинки
+  //
+  function setTransform(xPos, yPos, scale, el) {
+    el.style.transform = `translate3d(${xPos}px, ${yPos}px, 0) scale(${scale}, ${scale})`;
+  }
+
+  //
+  // Функция, ответственная за создание снежинки
+  //
+  function generateSnowflakes() {
+
+    // получаем элемент снежинки из DOM и сохраняем его
+    var originalSnowflake = document.querySelector(".snowflake");
+
+    // получаем доступ к контейнеру родителя элемента снежинки
+    var snowflakeContainer = originalSnowflake.parentNode;
+    snowflakeContainer.style.display = "block";
+
+    // получаем размер окна браузера
+    browserWidth = document.documentElement.clientWidth;
+    browserHeight = document.documentElement.clientHeight;
+
+    // создаем снежинку	
+    for (var i = 0; i < numberOfSnowflakes; i++) {
+
+      // клонируем индивидуальную снежинку и добавляем ее в snowflakeContainer
+      var snowflakeClone = originalSnowflake.cloneNode(true);
+      snowflakeContainer.appendChild(snowflakeClone);
+
+      // устанавливаем начальную позицию и свойства для оригинальной снежинки
+      var initialXPos = getPosition(50, browserWidth);
+      var initialYPos = getPosition(50, browserHeight);
+      var speed = 5 + Math.random() * 40;
+
+      // создаем объект Snowflake
+      var snowflakeObject = new Snowflake(snowflakeClone,
+        speed,
+        initialXPos,
+        initialYPos);
+      snowflakes.push(snowflakeObject);
+    }
+
+    // убираем снежинку, так как больше не нужно, чтобы она была видимой
+    snowflakeContainer.removeChild(originalSnowflake);
+
+    moveSnowflakes();
+  }
+
+  //
+  // Отвечает за перемещение каждой снежинки, вызывая функцию обновления
+  //
+  function moveSnowflakes() {
+
+    if (enableAnimations) {
+      for (var i = 0; i < snowflakes.length; i++) {
+        var snowflake = snowflakes[i];
+        snowflake.update();
+      }      
+    }
+
+    // Сбрасывает значения позиций всех снежинок до установки нового значения
+    if (resetPosition) {
+      browserWidth = document.documentElement.clientWidth;
+      browserHeight = document.documentElement.clientHeight;
+
+      for (var i = 0; i < snowflakes.length; i++) {
+        var snowflake = snowflakes[i];
+
+        snowflake.xPos = getPosition(50, browserWidth);
+        snowflake.yPos = getPosition(50, browserHeight);
+      }
+
+      resetPosition = false;
+    }
+
+    requestAnimationFrame(moveSnowflakes);
+  }
+
+  //
+  
+  function getPosition(offset, size) {
+    return Math.round(-1 * offset + Math.random() * (size + 2 * offset));
+  }
+
+  //
+  // Сброс позиций всех снежинок
+  //
+  function setResetFlag(e) {
+    resetPosition = true;
+  }
+</script>
+
+</head>
+<body>
+	<div class="container">
+		<div class="buttons">
+		<a class="button" href="/"><p>Главная</p></a>
+		</div>
+
+<div class="header">
+	<!-- <div class="emblem">
+		<img src="/theme/images/NewLogo.png">
+	</div> -->
+	<div class="title">
+		<p>Тест</p>
+	</div>
+<h1>Выполните задания по произведению "Пророк"</h1>
+<p>№1. Где пребывал поэт во время написания стиха? (Написать цифру)<br>1) В имении Михайловском
+2) В Москве
+3) В Санкт-Петербурге
+4) В Крыму<br><input type="text" id="z_1"></p>
+<p>№2. Тема стихотворения – (Написать цифру)<br>1) Трудности вероисповедания автора
+2) Наставление на путь истины читателей
+3) Философская проблема предназначения поэта и поэтического творчества
+4) Библейская история<br><input type="text" id="z_2"></p>
+<p>№3. В каком варианте представлен эпитет? (Написать цифру)<br>1) Как труп в пустыне я лежал
+2) Глаголом жги сердца людей
+3) Грешный язык
+4) Во всех вариантах<br><input type="text" id="z_3"></p>
+<p>№4. Что стало причиной написания стихотворения? (Написать цифру)<br>1) Новость о казни своих друзей-декабристов
+2) Ссылка
+3) Тоска по прежней жизни
+4) Разлука с друзьями<br><input type="text" id="z_4"></p>
+<p>№5. «Духовной жаждою томим» – это: (Написать цифру)<br>1) Метафора
+2) Сравнение
+3) Гипербола
+4) Эпитет<br><input type="text" id="z_5"></p>
+<button class="mybutton" onclick="proverit();">Проверить</button>
+<div id="rezultat"></div>
+<script>
+/*   window.onload = function() {
+    var drawingCanvas = document.getElementById('smile');
+    if(drawingCanvas && drawingCanvas.getContext) {
+     var context = drawingCanvas.getContext('2d');
+     // Рисуем окружность 
+     context.strokeStyle = "#000";
+     context.fillStyle = "#fc0";
+     context.beginPath();
+     context.arc(100,100,50,0,Math.PI*2,true);
+     context.closePath();
+     context.stroke();
+     context.fill();
+     // Рисуем левый глаз 
+     context.fillStyle = "#fff";
+     context.beginPath();
+     context.arc(84,90,8,0,Math.PI*2,true);
+     context.closePath();
+     context.stroke();
+     context.fill();
+     // Рисуем правый глаз 
+     context.beginPath();
+     context.arc(116,90,8,0,Math.PI*2,true);
+     context.closePath();
+     context.stroke();
+     context.fill();
+     // Рисуем рот
+     context.beginPath();
+     context.moveTo(70,115);
+     context.quadraticCurveTo(100,130,130,115);
+     context.quadraticCurveTo(100,150,70,115); 
+     context.closePath();
+     context.stroke();
+     context.fill();
+    }
+   }*/
+function proverit(){
+let pr_otv_zadachi_1 = 1;
+let pr_otv_zadachi_2 = 3;
+let pr_otv_zadachi_3 = 3;
+let pr_otv_zadachi_4 = 1;
+let pr_otv_zadachi_5 = 1;
+let otv_uch_1 = document.getElementById('z_1').value;
+let otv_uch_2 = document.getElementById('z_2').value;
+let otv_uch_3 = document.getElementById('z_3').value;
+let otv_uch_4 = document.getElementById('z_4').value;
+let otv_uch_5 = document.getElementById('z_5').value;
+
+
+
+let ball=0;
+if(otv_uch_1 == pr_otv_zadachi_1){
+    ball +=1;
+    otveti = "<p class='vo'>Вопрос 1. Вы ответили верно. Ваш ответ: "+otv_uch_1+"</p>";
+} else {
+    otveti = "<p class='nvo' color:#FF2E63>Вопрос 1. Вы ответили неверно. Ваш ответ: "+otv_uch_1+"</p>"; 
+}
+if(otv_uch_2 == pr_otv_zadachi_2){
+    ball +=1;
+    otveti += "<br><p class='vo'>Вопрос 2. Вы ответили верно. Ваш ответ: "+otv_uch_2+"</p>";
+} else {
+    otveti += "<br><p class='nvo'>Вопрос 2. Вы ответили неверно. Ваш ответ: "+otv_uch_2+"</p>"; 
+}
+if(otv_uch_3 == pr_otv_zadachi_3){
+    ball +=1;
+    otveti += "<br><p class='vo'>Вопрос 3. Вы ответили верно. Ваш ответ: "+otv_uch_3+"</p>";
+} else {
+    otveti += "<br><p class='nvo'>Вопрос 3. Вы ответили неверно. Ваш ответ: "+otv_uch_3+"</p>";
+}
+if(otv_uch_4 == pr_otv_zadachi_4){
+    ball +=1;
+    otveti += "<br><p class='vo'>Вопрос 4. Вы ответили верно. Ваш ответ: "+otv_uch_4+"</p>";
+} else {
+    otveti += "<br><p class='nvo'>Вопрос 4. Вы ответили неверно. Ваш ответ: "+otv_uch_4+"</p>";
+}
+if(otv_uch_5 == pr_otv_zadachi_5){
+    ball +=1;
+    otveti += "<br><p class='vo'>Вопрос 5. Вы ответили верно. Ваш ответ: "+otv_uch_5+"</p>";
+} else {
+    otveti += "<br><p class='nvo'>Вопрос 5. Вы ответили неверно. Ваш ответ: "+otv_uch_5+"</p>";
+}
+vsego_zadach = 5;
+procent_vip = ball/vsego_zadach * 100;
+procent_vip = procent_vip.toFixed();
+console.log(otveti);
+document.getElementById('rezultat').innerHTML = "Задания выполнены верно на "+Math.round(procent_vip*100)/100+"%."+otveti;
+}
+</script>
+	    <div class="contein3"><b>© 2023 9-гг</b></div>
+</div>
+	</div>
+</body>
+</html>
